@@ -1,0 +1,24 @@
+{
+    "classes": [
+        {
+            "className": "DBusClient",
+            "methods": [
+                {
+                    "access": "public",
+                    "name": "fetchMessage",
+                    "returnType": "QString"
+                }
+            ],
+            "object": true,
+            "qualifiedClassName": "DBusClient",
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "dbusclient.h",
+    "outputRevision": 68
+}

@@ -1,0 +1,14 @@
+-rootPath
+/home/fabrizio-guerriero/Scrivania/anomaly_detection_emb_workspace/anomaly_detection_emb/client
+-cmake-output
+-output-file
+/home/fabrizio-guerriero/Scrivania/anomaly_detection_emb_workspace/anomaly_detection_emb/build_check/client/.qt_plugins/Qt6_QmlPlugins_Imports_appclient.cmake
+-importPath
+/home/fabrizio-guerriero/Scrivania/anomaly_detection_emb_workspace/anomaly_detection_emb/build_check/client/client
+-importPath
+/home/fabrizio-guerriero/Scrivania/anomaly_detection_emb_workspace/anomaly_detection_emb/build_check/client
+-importPath
+/usr/lib/x86_64-linux-gnu/qt6/qml
+-qrcFiles
+/home/fabrizio-guerriero/Scrivania/anomaly_detection_emb_workspace/anomaly_detection_emb/build_check/client/.rcc/qmake_client.qrc
+/home/fabrizio-guerriero/Scrivania/anomaly_detection_emb_workspace/anomaly_detection_emb/build_check/client/.rcc/appclient_raw_qml_0.qrc

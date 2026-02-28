@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/client/">
+    <file alias="Main.qml">/home/fabrizio-guerriero/Scrivania/anomaly_detection_emb_workspace/anomaly_detection_emb/client/Main.qml</file>
+  </qresource>
+</RCC>
+

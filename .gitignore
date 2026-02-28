@@ -1,0 +1,49 @@
+# File oggetto compilati
+*.o
+*.obj
+
+# File generati da MOC, UIC, RCC
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+
+# File binari
+*.exe
+*.dll
+*.so
+*.dylib
+*.app
+
+# Directory di build
+build/
+bin/
+debug/
+release/
+out/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# File di log e temporanei
+*.log
+*.tmp
+*.swp
+*~
+
+# File di configurazione IDE
+.vscode/
+.idea/
+*.pro.user
+*.pro.user.*
+*.autosave
+*.user
+
+# File di sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup
+*.bak
+*.old

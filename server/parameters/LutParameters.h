@@ -1,0 +1,4 @@
+#ifndef LUTPARAMETERS_H
+#define LUTPARAMETERS_H
+
+#endif // LUTPARAMETERS_H

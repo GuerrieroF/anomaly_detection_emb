@@ -1,0 +1,68 @@
+module epr_qt_widgets_large_lib
+typeinfo epr_qt_widgets_large_lib.qmltypes
+prefer :/epr_qt_widgets_large_lib/
+singleton ColorPalettes 1.0 colors/ColorPalettes.qml
+singleton ColorSemantic 1.0 colors/ColorSemantic.qml
+singleton Spacing 1.0 spacing/Spacing.qml
+singleton FontStyle 1.0 fonts/FontStyle.qml
+IconButton 1.0 buttons/IconButton.qml
+IconButtonXLarge 1.0 buttons/IconButtonXLarge.qml
+ButtonCentralLarge 1.0 buttons/ButtonCentralLarge.qml
+CardL 1.0 cards/CardL.qml
+Snackbar 1.0 snackbars/Snackbar.qml
+singleton ScalingUtility 1.0 ScalingUtility.qml
+TabbedNavigationItem 1.0 parts/TabbedNavigationItem.qml
+TopBarDateAndTimeItem 1.0 parts/TopBarDateAndTimeItem.qml
+SegmentedControlItem 1.0 parts/SegmentedControlItem.qml
+NumericKeyboard 1.0 parts/NumericKeyboard.qml
+CustomRoundedRectangle 1.0 parts/CustomRoundedRectangle.qml
+ModalTopTitleContent 1.0 parts/ModalTopTitleContent.qml
+ModalTimeInputContent 1.0 parts/ModalTimeInputContent.qml
+ModalValueInputContent 1.0 parts/ModalValueInputContent.qml
+ModalBottomDoubleButton 1.0 parts/ModalBottomDoubleButton.qml
+ModalLoginInputContent 1.0 parts/ModalLoginInputContent.qml
+ModalBody 1.0 parts/ModalBody.qml
+ModalHeader 1.0 parts/ModalHeader.qml
+SwitchButton 1.0 parts/SwitchButton.qml
+Scrollbar 1.0 parts/Scrollbar.qml
+RadioButtonCustom 1.0 parts/RadioButtonCustom.qml
+ModalBottomSingleButton 1.0 parts/ModalBottomSingleButton.qml
+ModalTecnicialPhoneInputContent 1.0 parts/ModalTecnicialPhoneInputContent.qml
+TabbedNavigation 1.0 tabs/TabbedNavigation.qml
+TitleBarTabbedNavigation 1.0 bars/TitleBarTabbedNavigation.qml
+TitleBarCenter 1.0 bars/TitleBarCenter.qml
+TopBarDateAndTime 1.0 bars/TopBarDateAndTime.qml
+TopBarSingle 1.0 bars/TopBarSingle.qml
+TitleBarLeft 1.0 bars/TitleBarLeft.qml
+TopBarTabbedNavigation 1.0 bars/TopBarTabbedNavigation.qml
+Slider 1.0 sliders/Slider.qml
+SegmentedControl 1.0 segmentedControls/SegmentedControl.qml
+ParameterDialog 1.0 dialog/ParameterDialog.qml
+TimerDialog 1.0 dialog/TimerDialog.qml
+SegmentedControlDialog 1.0 dialog/SegmentedControlDialog.qml
+LoginDialog 1.0 dialog/LoginDialog.qml
+SliderDialog 1.0 dialog/SliderDialog.qml
+ListDialog 1.0 dialog/ListDialog.qml
+AlarmDialog 1.0 dialog/AlarmDialog.qml
+WarningDialog 1.0 dialog/WarningDialog.qml
+OperatorMessageDialog 1.0 dialog/OperatorMessageDialog.qml
+TecnicianNumberDialog 1.0 dialog/TecnicianNumberDialog.qml
+ProgressBarItem 1.0 progressBars/ProgressBarItem.qml
+Tooltip 1.0 tooltip/Tooltip.qml
+Banner 1.0 banners/Banner.qml
+ToggleListItem 1.0 lists/ToggleListItem.qml
+ParametersListItem 1.0 lists/ParametersListItem.qml
+NavigationListItem 1.0 lists/NavigationListItem.qml
+LanguageListItem 1.0 lists/LanguageListItem.qml
+RadioButtonListItem 1.0 lists/RadioButtonListItem.qml
+CheckBoxListItem 1.0 lists/CheckBoxListItem.qml
+ManualTestListItem 1.0 lists/ManualTestListItem.qml
+CountersListItem 1.0 lists/CountersListItem.qml
+DataMonitorListItem 1.0 lists/DataMonitorListItem.qml
+AccordionListItem 1.0 lists/AccordionListItem.qml
+SidebarTop 1.0 sidebars/SidebarTop.qml
+SidebarBottom 1.0 sidebars/SidebarBottom.qml
+SideNavigationItem 1.0 sidebars/SideNavigationItem.qml
+SideNavigationHeader 1.0 sidebars/SideNavigationHeader.qml
+Sidebar 1.0 sidebars/Sidebar.qml
+

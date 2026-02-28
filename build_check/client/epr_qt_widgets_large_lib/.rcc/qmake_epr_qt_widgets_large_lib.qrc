@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/epr_qt_widgets_large_lib">
+    <file alias="qmldir">/home/fabrizio-guerriero/Scrivania/anomaly_detection_emb_workspace/anomaly_detection_emb/build_check/client/epr_qt_widgets_large_lib/qmldir</file>
+  </qresource>
+</RCC>
+
