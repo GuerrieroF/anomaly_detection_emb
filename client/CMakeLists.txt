@@ -20,6 +20,7 @@ qt_add_executable(appclient
 qt_add_qml_module(appclient
     URI client
     VERSION 1.0
+    RESOURCE_PREFIX /qt/qml
     QML_FILES
         Main.qml
     SOURCES

@@ -1,5 +1,5 @@
 <RCC>
-  <qresource prefix="/client">
+  <qresource prefix="/qt/qml/client">
     <file alias="qmldir">/home/fabrizio-guerriero/Scrivania/anomaly_detection_emb_workspace/anomaly_detection_emb/build_check/client/client/qmldir</file>
   </qresource>
 </RCC>

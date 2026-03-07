@@ -16,6 +16,10 @@ qrc_*.cpp
 
 # Directory di build
 build/
+build_check/
+build-vscode-qt65/
+cmake-build-*/
+build-*/
 bin/
 debug/
 release/
@@ -24,6 +28,7 @@ CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
+compile_commands.json
 
 # File di log e temporanei
 *.log
@@ -38,6 +43,13 @@ Makefile
 *.pro.user.*
 *.autosave
 *.user
+CMakeLists.txt.user*
+.qtcreator/
+.qtc_clangd/
+
+# Cache QML/Qt
+*.qmlc
+*.jsc
 
 # File di sistema
 .DS_Store

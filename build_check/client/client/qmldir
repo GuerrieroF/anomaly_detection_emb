@@ -1,5 +1,5 @@
 module client
 typeinfo appclient.qmltypes
-prefer :/client/
+prefer :/qt/qml/client/
 Main 1.0 Main.qml
 

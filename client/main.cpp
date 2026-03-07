@@ -1,12 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QUrl>
 #include "connection/dbusclient.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-    DBusClient dbusClient;
 
     qmlRegisterSingletonType<DBusClient>("DBusExample.io", 1 , 0, "DBusClient",[&app](QQmlEngine *engine,QJSEngine *scripEngine) ->QObject* {
         Q_UNUSED(engine)
@@ -15,13 +15,14 @@ int main(int argc, char *argv[])
     });
 
     QQmlApplicationEngine engine;
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreationFailed,
-        &app,
-        []() { QCoreApplication::exit(-1); },
-        Qt::QueuedConnection);
-    engine.loadFromModule("client", "Main");
+    engine.load(QUrl(QStringLiteral("qrc:/qt/qml/client/Main.qml")));
+    if (engine.rootObjects().isEmpty()) {
+        engine.load(QUrl(QStringLiteral("qrc:/client/Main.qml")));
+    }
+
+    if (engine.rootObjects().isEmpty()) {
+        return -1;
+    }
 
     return app.exec();
 }

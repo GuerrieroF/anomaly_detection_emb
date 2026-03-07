@@ -31,6 +31,7 @@ Window {
 
             ButtonCentralLarge {
                 showIcon: false
+                enabled: DBusClient.serverAvailable
 
                 onClicked: {
                     resultText.text = DBusClient.fetchMessage()
@@ -39,7 +40,7 @@ Window {
 
             Text {
                 id: resultText
-                text: "Premi il bottone"
+                text: DBusClient.serverAvailable ? "Premi il bottone" : "Server D-Bus non disponibile"
             }
         }
     }

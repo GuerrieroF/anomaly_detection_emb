@@ -1,4 +1,4 @@
-// /client/Main.qml
+// /qt/qml/client/Main.qml
 #include <QtQml/qqmlprivate.h>
 #include <QtCore/qdatetime.h>
 #include <QtCore/qobject.h>
@@ -14,7 +14,7 @@
 #include <QtQml/qqmlengine.h>
 #include <type_traits>
 namespace QmlCacheGeneratedCode {
-namespace _client_Main_qml {
+namespace _qt_qml_client_Main_qml {
 extern const unsigned char qmlData alignas(16) [];
 extern const unsigned char qmlData alignas(16) [] = {
 
