@@ -9,7 +9,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core DBus LinguistTools)
+find_package(Qt6 REQUIRED COMPONENTS Core DBus LinguistTools SerialPort)
 #find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core DBus LinguistTools)
 #find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core DBus LinguistTools)
 
@@ -30,11 +30,14 @@ add_executable(appserver
   dbus/parameters_adaptor.h dbus/parameters_adaptor.cpp
   dbus/ParameterDBus.h dbus/ParameterDBus.cpp
   parameters/ParameterLut.cpp
+  uart/uart_protocol.h uart/uart_protocol.cpp
+  uart/uart_receiver.h uart/uart_receiver.cpp
 )
 
 target_link_libraries(appserver
     Qt6::Core
-    Qt6::DBus)
+    Qt6::DBus
+    Qt6::SerialPort)
 
 if(COMMAND qt_create_translation)
     qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
