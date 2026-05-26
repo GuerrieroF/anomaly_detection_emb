@@ -1,10 +1,7 @@
-#ifndef PARAMETERTYPE_H
-#define PARAMETERTYPE_H
-
-// ParameterType.h
 #pragma once
 
 #include <QString>
+#include <QVariant>
 
 enum class ParameterType {
     UInt8,
@@ -34,4 +31,19 @@ inline ParameterType parameterTypeFromString(const QString& str) {
     return ParameterType::String; // fallback
 }
 
-#endif // PARAMETERTYPE_H
+inline bool parameterTypeMatches(ParameterType type, const QVariant& value)
+{
+    switch (type) {
+    case ParameterType::UInt8:
+        return value.canConvert<quint32>();
+    case ParameterType::Int:
+        return value.canConvert<int>();
+    case ParameterType::Double:
+        return value.canConvert<double>();
+    case ParameterType::Bool:
+        return value.canConvert<bool>();
+    case ParameterType::String:
+        return value.canConvert<QString>();
+    }
+    return false;
+}

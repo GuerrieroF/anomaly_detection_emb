@@ -13,18 +13,25 @@
       <arg type="s" direction="in"/>   <!-- id -->
       <arg type="o" direction="out"/>  <!-- object path -->
     </method>
+
+    <!-- Restituisce metadati e valore corrente in un'unica chiamata -->
+    <method name="GetParameterInfo">
+      <arg type="s" direction="in"/>       <!-- id -->
+      <arg type="a{sv}" direction="out"/>  <!-- info -->
+    </method>
   </interface>
 
   <!-- Interfaccia Parameter (per ogni parametro singolo) -->
   <interface name="com.bikeDashboard.Parameter">
     <!-- Ottieni valore -->
     <method name="GetValue">
-      <arg type="s" direction="out"/>
+      <arg type="v" direction="out"/>
     </method>
 
     <!-- Imposta valore -->
     <method name="SetValue">
-      <arg type="s" direction="in"/>
+      <arg type="v" direction="in"/>
+      <arg type="b" direction="out"/> <!-- successo -->
     </method>
 
     <!-- Reset valore a default -->
@@ -36,13 +43,14 @@
     <property name="Id" type="s" access="read"/>
     <property name="Unit" type="s" access="read"/>
     <property name="Type" type="s" access="read"/>
-    <property name="Min" type="s" access="read"/>
-    <property name="Max" type="s" access="read"/>
+    <property name="Value" type="v" access="read"/>
+    <property name="DefaultValue" type="v" access="read"/>
+    <property name="Min" type="v" access="read"/>
+    <property name="Max" type="v" access="read"/>
 
     <!-- Segnale quando cambia valore -->
     <signal name="ValueChanged">
-      <arg type="s"/> <!-- nuovo valore -->
+      <arg type="v"/> <!-- nuovo valore -->
     </signal>
   </interface>
 </node>
-

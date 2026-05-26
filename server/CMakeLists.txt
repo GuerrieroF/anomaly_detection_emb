@@ -32,6 +32,7 @@ add_executable(appserver
   parameters/ParameterLut.cpp
   uart/uart_protocol.h uart/uart_protocol.cpp
   uart/uart_receiver.h uart/uart_receiver.cpp
+  telemetry/TelemetryService.h telemetry/TelemetryService.cpp
 )
 
 target_link_libraries(appserver

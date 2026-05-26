@@ -33,10 +33,11 @@ class ParameterAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Introspection", ""
 "  <interface name=\"com.bikeDashboard.Parameter\">\n"
 "    <method name=\"GetValue\">\n"
-"      <arg direction=\"out\" type=\"s\"/>\n"
+"      <arg direction=\"out\" type=\"v\"/>\n"
 "    </method>\n"
 "    <method name=\"SetValue\">\n"
-"      <arg direction=\"in\" type=\"s\"/>\n"
+"      <arg direction=\"in\" type=\"v\"/>\n"
+"      <arg direction=\"out\" type=\"b\"/>\n"
 "    </method>\n"
 "    <method name=\"Reset\">\n"
 "      <arg direction=\"out\" type=\"b\"/>\n"
@@ -44,10 +45,12 @@ class ParameterAdaptor: public QDBusAbstractAdaptor
 "    <property access=\"read\" type=\"s\" name=\"Id\"/>\n"
 "    <property access=\"read\" type=\"s\" name=\"Unit\"/>\n"
 "    <property access=\"read\" type=\"s\" name=\"Type\"/>\n"
-"    <property access=\"read\" type=\"s\" name=\"Min\"/>\n"
-"    <property access=\"read\" type=\"s\" name=\"Max\"/>\n"
+"    <property access=\"read\" type=\"v\" name=\"Value\"/>\n"
+"    <property access=\"read\" type=\"v\" name=\"DefaultValue\"/>\n"
+"    <property access=\"read\" type=\"v\" name=\"Min\"/>\n"
+"    <property access=\"read\" type=\"v\" name=\"Max\"/>\n"
 "    <signal name=\"ValueChanged\">\n"
-"      <arg type=\"s\"/>\n"
+"      <arg type=\"v\"/>\n"
 "    </signal>\n"
 "  </interface>\n"
         "")
@@ -59,11 +62,14 @@ public: // PROPERTIES
     Q_PROPERTY(QString Id READ id)
     QString id() const;
 
-    Q_PROPERTY(QString Max READ max)
-    QString max() const;
+    Q_PROPERTY(QVariant DefaultValue READ defaultValue)
+    QVariant defaultValue() const;
 
-    Q_PROPERTY(QString Min READ min)
-    QString min() const;
+    Q_PROPERTY(QVariant Max READ max)
+    QVariant max() const;
+
+    Q_PROPERTY(QVariant Min READ min)
+    QVariant min() const;
 
     Q_PROPERTY(QString Type READ type)
     QString type() const;
@@ -71,12 +77,15 @@ public: // PROPERTIES
     Q_PROPERTY(QString Unit READ unit)
     QString unit() const;
 
+    Q_PROPERTY(QVariant Value READ value)
+    QVariant value() const;
+
 public Q_SLOTS: // METHODS
-    QString GetValue();
+    QVariant GetValue();
     bool Reset();
-    void SetValue(const QString &in0);
+    bool SetValue(const QVariant &in0);
 Q_SIGNALS: // SIGNALS
-    void ValueChanged(const QString &in0);
+    void ValueChanged(const QVariant &in0);
 };
 
 /*
@@ -95,6 +104,10 @@ class ParameterManagerAdaptor: public QDBusAbstractAdaptor
 "      <arg direction=\"in\" type=\"s\"/>\n"
 "      <arg direction=\"out\" type=\"o\"/>\n"
 "    </method>\n"
+"    <method name=\"GetParameterInfo\">\n"
+"      <arg direction=\"in\" type=\"s\"/>\n"
+"      <arg direction=\"out\" type=\"a{sv}\"/>\n"
+"    </method>\n"
 "  </interface>\n"
         "")
 public:
@@ -104,6 +117,7 @@ public:
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
     QDBusObjectPath GetParameter(const QString &in0);
+    QVariantMap GetParameterInfo(const QString &in0);
     QStringList ListParameters();
 Q_SIGNALS: // SIGNALS
 };

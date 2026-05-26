@@ -2,12 +2,13 @@
 #include <QObject>
 #include <QString>
 #include <QVariant>
+#include "ParameterType.h"
 
 class Parameter : public QObject {
     Q_OBJECT
 public:
     Parameter(const QString& id,
-              const QString& type,
+              ParameterType type,
               const QVariant& defaultValue,
               const QVariant& min = {},
               const QVariant& max = {},
@@ -15,7 +16,8 @@ public:
               QObject* parent = nullptr);
 
     QString id() const;
-    QString type() const;
+    ParameterType type() const;
+    QString typeName() const;
     QVariant value() const;
     QVariant defaultValue() const;
     QVariant min() const;
@@ -24,13 +26,15 @@ public:
 
     bool setValue(const QVariant& newValue);
     void reset();
+    bool isValid(const QVariant& value) const;
+    QVariant normalizedValue(const QVariant& value, bool* ok = nullptr) const;
 
 signals:
     void valueChanged(const QVariant& newValue);
 
 private:
     QString m_id;
-    QString m_type;
+    ParameterType m_type;
     QVariant m_value;
     QVariant m_defaultValue;
     QVariant m_min;

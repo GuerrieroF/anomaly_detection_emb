@@ -1,6 +1,9 @@
 #pragma once
 #include <QObject>
+#include <QMap>
+#include <QVariantMap>
 #include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusObjectPath>
 #include "../parameters/ParameterManager.h"
 #include "parameters_adaptor.h" // generato da qdbusxml2cpp
 #include "ParameterDBus.h"
@@ -14,9 +17,13 @@ public:
 
 public slots:
     QStringList ListParameters();
-    QString GetParameter(const QString& id);
+    QDBusObjectPath GetParameter(const QString& id);
+    QVariantMap GetParameterInfo(const QString& id);
 
 private:
+    QString objectPathForId(const QString& id) const;
+
     ParameterManager* m_manager;
     QDBusConnection m_connection;
+    QMap<QString, ParameterDBus*> m_parameterObjects;
 };

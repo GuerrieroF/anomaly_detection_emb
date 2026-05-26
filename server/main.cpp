@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
 {
 
     QCoreApplication a(argc, argv);
+    QCoreApplication::setApplicationName("anomaly_detection_emb");
 
     DBusServer dbusServer(&a);
 

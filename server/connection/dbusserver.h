@@ -5,8 +5,12 @@
 #include "dbusserver_interface.h"
 
 namespace uart {
-struct ImuSample;
 class UartReceiver;
+}
+
+namespace telemetry {
+class TelemetryService;
+struct ImuReading;
 }
 
 class DBusServer : public QObject
@@ -22,10 +26,11 @@ public slots:
 signals:
 
 private slots:
-    void onImuSample(const uart::ImuSample& sample);
+    void onImuReading(const telemetry::ImuReading& reading);
 
 private:
     uart::UartReceiver* m_receiver = nullptr;
+    telemetry::TelemetryService* m_telemetry = nullptr;
     QString m_lastImuMessage;
     QString m_uartPort;
     qint32 m_uartBaud = 115200;

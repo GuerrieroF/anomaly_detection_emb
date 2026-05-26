@@ -3,7 +3,7 @@
 
 #include <QByteArray>
 #include <QVector>
-#include <QtTypes>
+#include <QtGlobal>
 
 namespace uart {
 

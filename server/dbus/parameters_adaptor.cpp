@@ -39,16 +39,22 @@ QString ParameterAdaptor::id() const
     return qvariant_cast< QString >(parent()->property("Id"));
 }
 
-QString ParameterAdaptor::max() const
+QVariant ParameterAdaptor::defaultValue() const
 {
-    // get the value of property Max
-    return qvariant_cast< QString >(parent()->property("Max"));
+    // get the value of property DefaultValue
+    return qvariant_cast< QVariant >(parent()->property("DefaultValue"));
 }
 
-QString ParameterAdaptor::min() const
+QVariant ParameterAdaptor::max() const
+{
+    // get the value of property Max
+    return qvariant_cast< QVariant >(parent()->property("Max"));
+}
+
+QVariant ParameterAdaptor::min() const
 {
     // get the value of property Min
-    return qvariant_cast< QString >(parent()->property("Min"));
+    return qvariant_cast< QVariant >(parent()->property("Min"));
 }
 
 QString ParameterAdaptor::type() const
@@ -63,11 +69,17 @@ QString ParameterAdaptor::unit() const
     return qvariant_cast< QString >(parent()->property("Unit"));
 }
 
-QString ParameterAdaptor::GetValue()
+QVariant ParameterAdaptor::value() const
+{
+    // get the value of property Value
+    return qvariant_cast< QVariant >(parent()->property("Value"));
+}
+
+QVariant ParameterAdaptor::GetValue()
 {
     // handle method call com.bikeDashboard.Parameter.GetValue
-    QString out0;
-    QMetaObject::invokeMethod(parent(), "GetValue", Q_RETURN_ARG(QString, out0));
+    QVariant out0;
+    QMetaObject::invokeMethod(parent(), "GetValue", Q_RETURN_ARG(QVariant, out0));
     return out0;
 }
 
@@ -79,10 +91,12 @@ bool ParameterAdaptor::Reset()
     return out0;
 }
 
-void ParameterAdaptor::SetValue(const QString &in0)
+bool ParameterAdaptor::SetValue(const QVariant &in0)
 {
     // handle method call com.bikeDashboard.Parameter.SetValue
-    QMetaObject::invokeMethod(parent(), "SetValue", Q_ARG(QString, in0));
+    bool out0;
+    QMetaObject::invokeMethod(parent(), "SetValue", Q_RETURN_ARG(bool, out0), Q_ARG(QVariant, in0));
+    return out0;
 }
 
 /*
@@ -109,6 +123,14 @@ QDBusObjectPath ParameterManagerAdaptor::GetParameter(const QString &in0)
     return out0;
 }
 
+QVariantMap ParameterManagerAdaptor::GetParameterInfo(const QString &in0)
+{
+    // handle method call com.bikeDashboard.ParameterManager.GetParameterInfo
+    QVariantMap out0;
+    QMetaObject::invokeMethod(parent(), "GetParameterInfo", Q_RETURN_ARG(QVariantMap, out0), Q_ARG(QString, in0));
+    return out0;
+}
+
 QStringList ParameterManagerAdaptor::ListParameters()
 {
     // handle method call com.bikeDashboard.ParameterManager.ListParameters
@@ -116,4 +138,3 @@ QStringList ParameterManagerAdaptor::ListParameters()
     QMetaObject::invokeMethod(parent(), "ListParameters", Q_RETURN_ARG(QStringList, out0));
     return out0;
 }
-
