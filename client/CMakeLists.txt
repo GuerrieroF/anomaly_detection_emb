@@ -23,11 +23,12 @@ qt_add_qml_module(appclient
     RESOURCE_PREFIX /qt/qml
     QML_FILES
         Main.qml
+        views/HomeView.qml
     SOURCES
         connection/dbusclient.h connection/dbusclient.cpp
 )
 
-add_subdirectory(epr_qt_widgets_large_lib)
+add_subdirectory(dashboard_ui)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -44,7 +45,7 @@ target_link_libraries(appclient
     PRIVATE Qt6::Quick
             Qt6::DBus
             Qt6::Core
-            epr_qt_widgets_large_lib
+            dashboard_ui
 )
 
 include(GNUInstallDirs)
