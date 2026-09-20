@@ -5,6 +5,7 @@
 
 namespace uart {
 struct ImuSample;
+struct GpsSample;
 }
 
 namespace telemetry {
@@ -26,6 +27,22 @@ struct ImuReading
     qint64 receivedMs = 0;
 };
 
+struct GpsReading
+{
+    double latitudeDeg = 0.0;
+    double longitudeDeg = 0.0;
+    double altitudeM = 0.0;
+    double speedKmh = 0.0;
+    double headingDeg = 0.0;
+    quint32 timestampMs = 0;
+    quint32 utcTimeMs = 0;
+    quint32 utcDateDdmmyy = 0;
+    quint8 satellites = 0;
+    quint8 fixType = 0;
+    bool valid = false;
+    qint64 receivedMs = 0;
+};
+
 class TelemetryService : public QObject
 {
     Q_OBJECT
@@ -34,18 +51,25 @@ public:
 
     bool hasImuReading() const;
     ImuReading lastImuReading() const;
+    bool hasGpsReading() const;
+    GpsReading lastGpsReading() const;
 
 public slots:
     void onRawImuSample(const uart::ImuSample& sample);
+    void onRawGpsSample(const uart::GpsSample& sample);
 
 signals:
     void imuReadingUpdated(const telemetry::ImuReading& reading);
+    void gpsReadingUpdated(const telemetry::GpsReading& reading);
 
 private:
     ImuReading m_lastImuReading;
     bool m_hasImuReading = false;
+    GpsReading m_lastGpsReading;
+    bool m_hasGpsReading = false;
 };
 
 } // namespace telemetry
 
 Q_DECLARE_METATYPE(telemetry::ImuReading)
+Q_DECLARE_METATYPE(telemetry::GpsReading)

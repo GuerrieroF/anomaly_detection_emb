@@ -16,12 +16,25 @@ Ogni frame ha questo formato binario (little-endian):
 
 Il CRC16 e` calcolato su: `TYPE + LEN + PAYLOAD` (senza SOF), polinomio `0x1021`, init `0xFFFF`.
 
+## Comando di avvio GPS inviato alla scheda
+
+I comandi verso il firmware usano un header diverso dai frame dati ricevuti:
+`SOF0 | SOF1 | VERSION | TYPE | LENGTH | MODE | CRC16`.
+Il CRC16-CCITT (init `0xFFFF`) copre `VERSION + TYPE + LENGTH + MODE`.
+
+All'apertura riuscita della porta UART il server invia una volta il comando
+di avvio GPS: `AA 55 01 02 01 01 04 BF`.
+`TYPE=0x02` identifica il GPS e `MODE=0x01` richiede l'avvio.
+L'accodamento dei byte alla porta viene registrato come `TX in coda`;
+non costituisce conferma dell'esecuzione da parte del firmware.
+
 ## TYPE message
 
 Il protocollo e` generico: `TYPE` identifica il payload applicativo.
 
 Tipi attualmente usati:
 - `0x01` = IMU sample
+- `0x02` = GPS sample
 
 Tipi futuri (esempi):
 - `0x02` = temperatura board
@@ -38,6 +51,26 @@ Ordine campi (`int16_t`, little-endian):
 4. `gyro_x`
 5. `gyro_y`
 6. `gyro_z`
+
+## Payload TYPE `0x02` (GPS, LEN = 31)
+
+Tutti i campi multibyte sono little-endian. Gli offset sono relativi al payload:
+
+| Offset | Byte | Campo | Unita' |
+| --- | ---: | --- | --- |
+| 0 | 4 | `timestamp_ms` (`uint32`) | tick STM32, ms |
+| 4 | 4 | `utc_time_ms` (`uint32`) | ms da mezzanotte |
+| 8 | 4 | `utc_date_ddmmyy` (`uint32`) | DDMMYY |
+| 12 | 4 | `latitude_deg_e7` (`int32`) | gradi x 10^7 |
+| 16 | 4 | `longitude_deg_e7` (`int32`) | gradi x 10^7 |
+| 20 | 4 | `altitude_mm` (`int32`) | millimetri |
+| 24 | 2 | `speed_cms` (`uint16`) | cm/s |
+| 26 | 2 | `heading_cdeg` (`uint16`) | centesimi di grado |
+| 28 | 1 | `satellites` (`uint8`) | numero |
+| 29 | 1 | `fix_type` (`uint8`) | tipo fix |
+| 30 | 1 | `valid` (`uint8`) | 0 o 1 |
+
+Il frame completo e' lungo 37 byte, compresi header e CRC16.
 
 ## Configurazione runtime server
 

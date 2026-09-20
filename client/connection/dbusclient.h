@@ -25,6 +25,9 @@ class DBusClient : public QObject
     Q_PROPERTY(double tiltYDeg READ tiltYDeg NOTIFY imuDataChanged)
     Q_PROPERTY(double tiltZDeg READ tiltZDeg NOTIFY imuDataChanged)
     Q_PROPERTY(QString latestMessage READ latestMessage NOTIFY latestMessageChanged)
+    Q_PROPERTY(QString trafficLog READ trafficLog NOTIFY trafficLogChanged)
+    Q_PROPERTY(QString gpsMessage READ gpsMessage NOTIFY gpsMessageChanged)
+    Q_PROPERTY(QString imuDetails READ imuDetails NOTIFY imuDetailsChanged)
 public:
     explicit DBusClient(QObject *parent = nullptr);
     ~DBusClient(){}
@@ -43,22 +46,30 @@ public:
     double tiltYDeg() const;
     double tiltZDeg() const;
     QString latestMessage() const;
+    QString trafficLog() const;
+    QString gpsMessage() const;
+    QString imuDetails() const;
 
 signals:
     void serverAvailabilityChanged();
     void vehicleStateChanged();
     void imuDataChanged();
     void latestMessageChanged();
+    void trafficLogChanged();
+    void gpsMessageChanged();
+    void imuDetailsChanged();
 
 private:
     void tryConnect();
     void pollServer();
+    void pollTraffic();
     bool isInterfaceReady() const;
     void updateFromMessage(const QString& message);
 
     QDBusInterface *iface;
     QTimer retryTimer;
     QTimer pollTimer;
+    QTimer trafficTimer;
     QRegularExpression m_imuPhysicalRegex;
     QRegularExpression m_imuRawRegex;
     bool m_serverAvailable;
@@ -78,6 +89,9 @@ private:
     double m_gravityZg;
     qint64 m_lastTimestampMs;
     QString m_latestMessage;
+    QString m_trafficLog;
+    QString m_gpsMessage;
+    QString m_imuDetails;
 };
 
 #endif // DBUSCLIENT_H

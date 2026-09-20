@@ -15,13 +15,16 @@ public:
     explicit UartReceiver(const QString& portName, qint32 baudRate, QObject* parent = nullptr);
 
     bool start();
+    bool sendGpsStart();
     bool isOpen() const;
     QString portName() const;
     QString lastError() const;
 
 signals:
     void imuSampleReceived(const uart::ImuSample& sample);
+    void gpsSampleReceived(const uart::GpsSample& sample);
     void frameReceived(const uart::UartFrame& frame);
+    void frameQueued(const QByteArray& frame);
     void receiverError(const QString& errorText);
 
 private slots:

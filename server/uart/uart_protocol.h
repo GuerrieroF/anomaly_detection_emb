@@ -9,6 +9,7 @@ namespace uart {
 
 namespace MessageType {
 constexpr quint8 ImuSample = 0x01;
+constexpr quint8 GpsSample = 0x02;
 }
 
 struct UartFrame
@@ -26,6 +27,22 @@ struct ImuSample
     qint16 gyroX = 0;
     qint16 gyroY = 0;
     qint16 gyroZ = 0;
+    qint64 receivedMs = 0;
+};
+
+struct GpsSample
+{
+    quint32 timestampMs = 0;
+    quint32 utcTimeMs = 0;
+    quint32 utcDateDdmmyy = 0;
+    qint32 latitudeDegE7 = 0;
+    qint32 longitudeDegE7 = 0;
+    qint32 altitudeMm = 0;
+    quint16 speedCms = 0;
+    quint16 headingCdeg = 0;
+    quint8 satellites = 0;
+    quint8 fixType = 0;
+    bool valid = false;
     qint64 receivedMs = 0;
 };
 
@@ -51,6 +68,18 @@ class ImuPayloadCodec
 {
 public:
     static bool decode(const UartFrame& frame, ImuSample* outSample);
+};
+
+class GpsPayloadCodec
+{
+public:
+    static bool decode(const UartFrame& frame, GpsSample* outSample);
+};
+
+class ControlCommandCodec
+{
+public:
+    static QByteArray encodeGpsStart();
 };
 
 } // namespace uart

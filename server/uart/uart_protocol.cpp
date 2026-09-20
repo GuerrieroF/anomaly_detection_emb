@@ -10,6 +10,7 @@ constexpr int kHeaderSize = 4; // SOF0, SOF1, TYPE, LEN
 constexpr int kCrcSize = 2;
 constexpr int kMinFrameSize = kHeaderSize + kCrcSize;
 constexpr int kImuPayloadSize = 12;
+constexpr int kGpsPayloadSize = 31;
 } // namespace
 
 namespace uart {
@@ -125,6 +126,38 @@ bool ImuPayloadCodec::decode(const UartFrame& frame, ImuSample* outSample)
     outSample->gyroZ = qFromLittleEndian<qint16>(raw + 10);
     outSample->receivedMs = frame.receivedMs;
     return true;
+}
+
+bool GpsPayloadCodec::decode(const UartFrame& frame, GpsSample* outSample)
+{
+    if (!outSample || frame.type != MessageType::GpsSample || frame.payload.size() != kGpsPayloadSize) {
+        return false;
+    }
+
+    const auto* raw = reinterpret_cast<const uchar*>(frame.payload.constData());
+    outSample->timestampMs = qFromLittleEndian<quint32>(raw + 0);
+    outSample->utcTimeMs = qFromLittleEndian<quint32>(raw + 4);
+    outSample->utcDateDdmmyy = qFromLittleEndian<quint32>(raw + 8);
+    outSample->latitudeDegE7 = qFromLittleEndian<qint32>(raw + 12);
+    outSample->longitudeDegE7 = qFromLittleEndian<qint32>(raw + 16);
+    outSample->altitudeMm = qFromLittleEndian<qint32>(raw + 20);
+    outSample->speedCms = qFromLittleEndian<quint16>(raw + 24);
+    outSample->headingCdeg = qFromLittleEndian<quint16>(raw + 26);
+    outSample->satellites = raw[28];
+    outSample->fixType = raw[29];
+    outSample->valid = raw[30] == 1;
+    outSample->receivedMs = frame.receivedMs;
+    return true;
+}
+
+QByteArray ControlCommandCodec::encodeGpsStart()
+{
+    // Firmware command: SOF0, SOF1, VERSION, TYPE, LENGTH, MODE, CRC16.
+    QByteArray command = QByteArray::fromHex("aa5501020101");
+    const quint16 crc = UartProtocol::crc16Ccitt(command.mid(2));
+    command.append(static_cast<char>(crc & 0xFF));
+    command.append(static_cast<char>((crc >> 8) & 0xFF));
+    return command;
 }
 
 } // namespace uart

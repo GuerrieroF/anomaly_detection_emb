@@ -41,3 +41,23 @@ QString DBusInterfaceAdaptor::getMessage()
     return out0;
 }
 
+QString DBusInterfaceAdaptor::getImuDetails()
+{
+    QString out0;
+    QMetaObject::invokeMethod(parent(), "getImuDetails", Q_RETURN_ARG(QString, out0));
+    return out0;
+}
+
+QString DBusInterfaceAdaptor::getTraffic()
+{
+    QString out0;
+    QMetaObject::invokeMethod(parent(), "getTraffic", Q_RETURN_ARG(QString, out0));
+    return out0;
+}
+
+QString DBusInterfaceAdaptor::getGpsMessage()
+{
+    QString out0;
+    QMetaObject::invokeMethod(parent(), "getGpsMessage", Q_RETURN_ARG(QString, out0));
+    return out0;
+}

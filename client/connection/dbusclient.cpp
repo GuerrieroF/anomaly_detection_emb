@@ -43,6 +43,10 @@ DBusClient::DBusClient(QObject *parent)
     connect(&pollTimer, &QTimer::timeout, this, &DBusClient::pollServer);
     pollTimer.start();
 
+    trafficTimer.setInterval(250);
+    connect(&trafficTimer, &QTimer::timeout, this, &DBusClient::pollTraffic);
+    trafficTimer.start();
+
     tryConnect();
     if (!m_serverAvailable) {
         retryTimer.start();
@@ -130,6 +134,21 @@ QString DBusClient::latestMessage() const
     return m_latestMessage;
 }
 
+QString DBusClient::trafficLog() const
+{
+    return m_trafficLog;
+}
+
+QString DBusClient::gpsMessage() const
+{
+    return m_gpsMessage;
+}
+
+QString DBusClient::imuDetails() const
+{
+    return m_imuDetails;
+}
+
 void DBusClient::tryConnect()
 {
     if (iface) {
@@ -165,6 +184,30 @@ void DBusClient::pollServer()
 {
     const QString message = fetchMessage();
     updateFromMessage(message);
+}
+
+void DBusClient::pollTraffic()
+{
+    if (!isInterfaceReady()) {
+        return;
+    }
+    const QDBusReply<QString> reply = iface->call("getTraffic");
+    if (reply.isValid() && m_trafficLog != reply.value()) {
+        m_trafficLog = reply.value();
+        emit trafficLogChanged();
+    }
+
+    const QDBusReply<QString> gpsReply = iface->call("getGpsMessage");
+    if (gpsReply.isValid() && m_gpsMessage != gpsReply.value()) {
+        m_gpsMessage = gpsReply.value();
+        emit gpsMessageChanged();
+    }
+
+    const QDBusReply<QString> imuReply = iface->call("getImuDetails");
+    if (imuReply.isValid() && m_imuDetails != imuReply.value()) {
+        m_imuDetails = imuReply.value();
+        emit imuDetailsChanged();
+    }
 }
 
 void DBusClient::updateFromMessage(const QString& message)

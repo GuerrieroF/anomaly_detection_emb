@@ -35,6 +35,15 @@ class DBusInterfaceAdaptor: public QDBusAbstractAdaptor
 "    <method name=\"getMessage\">\n"
 "      <arg direction=\"out\" type=\"s\"/>\n"
 "    </method>\n"
+"    <method name=\"getImuDetails\">\n"
+"      <arg direction=\"out\" type=\"s\"/>\n"
+"    </method>\n"
+"    <method name=\"getTraffic\">\n"
+"      <arg direction=\"out\" type=\"s\"/>\n"
+"    </method>\n"
+"    <method name=\"getGpsMessage\">\n"
+"      <arg direction=\"out\" type=\"s\"/>\n"
+"    </method>\n"
 "  </interface>\n"
         "")
 public:
@@ -44,6 +53,9 @@ public:
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
     QString getMessage();
+    QString getImuDetails();
+    QString getTraffic();
+    QString getGpsMessage();
 Q_SIGNALS: // SIGNALS
 };
 

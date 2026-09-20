@@ -21,11 +21,25 @@ bool UartReceiver::start()
         return true;
     }
 
-    const bool opened = m_serial.open(QIODevice::ReadOnly);
+    const bool opened = m_serial.open(QIODevice::ReadWrite);
     if (!opened) {
         emit receiverError(m_serial.errorString());
     }
     return opened;
+}
+
+bool UartReceiver::sendGpsStart()
+{
+    if (!m_serial.isOpen()) {
+        return false;
+    }
+
+    const QByteArray frame = ControlCommandCodec::encodeGpsStart();
+    if (m_serial.write(frame) != frame.size()) {
+        return false;
+    }
+    emit frameQueued(frame);
+    return true;
 }
 
 bool UartReceiver::isOpen() const
@@ -61,6 +75,13 @@ void UartReceiver::dispatchFrame(const UartFrame& frame)
         ImuSample sample;
         if (ImuPayloadCodec::decode(frame, &sample)) {
             emit imuSampleReceived(sample);
+        }
+        break;
+    }
+    case MessageType::GpsSample: {
+        GpsSample sample;
+        if (GpsPayloadCodec::decode(frame, &sample)) {
+            emit gpsSampleReceived(sample);
         }
         break;
     }

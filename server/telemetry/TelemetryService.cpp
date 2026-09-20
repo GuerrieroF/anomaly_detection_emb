@@ -13,6 +13,7 @@ TelemetryService::TelemetryService(QObject* parent)
     : QObject(parent)
 {
     qRegisterMetaType<telemetry::ImuReading>("telemetry::ImuReading");
+    qRegisterMetaType<telemetry::GpsReading>("telemetry::GpsReading");
 }
 
 bool TelemetryService::hasImuReading() const
@@ -23,6 +24,16 @@ bool TelemetryService::hasImuReading() const
 ImuReading TelemetryService::lastImuReading() const
 {
     return m_lastImuReading;
+}
+
+bool TelemetryService::hasGpsReading() const
+{
+    return m_hasGpsReading;
+}
+
+GpsReading TelemetryService::lastGpsReading() const
+{
+    return m_lastGpsReading;
 }
 
 void TelemetryService::onRawImuSample(const uart::ImuSample& sample)
@@ -45,6 +56,27 @@ void TelemetryService::onRawImuSample(const uart::ImuSample& sample)
     m_lastImuReading = reading;
     m_hasImuReading = true;
     emit imuReadingUpdated(reading);
+}
+
+void TelemetryService::onRawGpsSample(const uart::GpsSample& sample)
+{
+    GpsReading reading;
+    reading.latitudeDeg = sample.latitudeDegE7 / 10000000.0;
+    reading.longitudeDeg = sample.longitudeDegE7 / 10000000.0;
+    reading.altitudeM = sample.altitudeMm / 1000.0;
+    reading.speedKmh = sample.speedCms * 0.036;
+    reading.headingDeg = sample.headingCdeg / 100.0;
+    reading.timestampMs = sample.timestampMs;
+    reading.utcTimeMs = sample.utcTimeMs;
+    reading.utcDateDdmmyy = sample.utcDateDdmmyy;
+    reading.satellites = sample.satellites;
+    reading.fixType = sample.fixType;
+    reading.valid = sample.valid;
+    reading.receivedMs = sample.receivedMs;
+
+    m_lastGpsReading = reading;
+    m_hasGpsReading = true;
+    emit gpsReadingUpdated(reading);
 }
 
 } // namespace telemetry
