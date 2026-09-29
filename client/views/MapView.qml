@@ -6,6 +6,7 @@ MapPanel {
     id: root
 
     property var mapConfiguration: ({})
+    property var anomalies: []
     readonly property bool usesThunderforest: mapConfiguration.usesThunderforest === true
 
     mapPlugin: usesThunderforest ? thunderforestPlugin : standardPlugin

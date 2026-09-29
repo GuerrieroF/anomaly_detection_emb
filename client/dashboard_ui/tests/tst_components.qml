@@ -90,6 +90,8 @@ TestCase {
         compare(accelerations.visible, false)
         compare(map.width, pages.width)
         compare(map.height, pages.height)
+        compare(map.mapToItem(dashboard, 0, 0).x, 0)
+        compare(map.width, dashboard.width)
         map.zoomLevel = 12
         mockTelemetry.imuDataChanged()
         mouseClick(findChild(dashboard, "settingsButton"))

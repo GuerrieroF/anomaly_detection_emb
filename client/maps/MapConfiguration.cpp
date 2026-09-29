@@ -15,6 +15,13 @@ MapConfiguration::MapConfiguration(const QString &fileName)
     m_properties.insert(QStringLiteral("usesThunderforest"), false);
     QSettings settings(fileName, QSettings::IniFormat);
     const QString provider = settings.value(QStringLiteral("map/provider"), QStringLiteral("osm")).toString();
+    if (provider == QStringLiteral("google")) {
+        m_properties.insert(QStringLiteral("googleApiKey"),
+                            settings.value(QStringLiteral("map/apiKey")).toString().trimmed());
+        m_properties.insert(QStringLiteral("googleMapId"),
+                            settings.value(QStringLiteral("map/mapId"), QStringLiteral("DEMO_MAP_ID")).toString().trimmed());
+        return;
+    }
     if (provider != QStringLiteral("thunderforest"))
         return;
 

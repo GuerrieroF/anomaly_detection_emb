@@ -178,3 +178,44 @@ DBus
 SerialPort
 LinguistTools
 ```
+
+## Mappa del client
+
+La build predefinita usa la mappa Qt Location/OpenStreetMap esistente. Per scegliere
+Google Maps durante la configurazione CMake:
+
+```sh
+cmake -S . -B build-google -DQt6_DIR=/percorso/Qt/lib/cmake/Qt6 -DANOMALY_MAP_BACKEND=google
+cmake --build build-google
+```
+
+La variante Google richiede Qt 6 WebEngineQuick, accesso Internet e una chiave
+Google Cloud con Maps JavaScript API abilitata e fatturazione configurata.
+Copiare `client/map.example.ini` in `client/map.local.ini` e impostare:
+
+```ini
+[map]
+provider=google
+apiKey=LA_PROPRIA_CHIAVE
+mapId=IL_PROPRIO_MAP_ID
+```
+
+Il Map ID serve per i marker avanzati; `DEMO_MAP_ID` è usato solo se
+`mapId` manca. Il file locale è escluso da Git e viene copiato accanto
+all'eseguibile da CMake; dopo averlo cambiato, riconfigurare CMake. È anche
+possibile specificare il percorso con `ANOMALY_MAP_CONFIG`.
+
+La pagina riceve dal client `hasPosition`, `latitude`, `longitude`,
+`heading` e `anomalies`. Ogni anomalia è un oggetto
+`{ latitude, longitude, label }`; `type` può sostituire `label`.
+Le coordinate non valide vengono ignorate. Il GPS e la direzione arrivano già
+dal client D-Bus. Il flusso delle anomalie non è ancora prodotto dal server:
+il client espone la proprietà `anomalies` pronta per quel collegamento.
+
+La pagina HTML è incorporata come risorsa Qt. Google avverte che le pagine
+caricate con uno schema locale come `qrc:` possono omettere il referrer, e
+quindi una chiave limitata per sito web può essere rifiutata. Per una
+distribuzione con restrizioni sul referrer, occorre ospitare la pagina su
+un'origine HTTPS autorizzata e configurare il client per caricarla.
+Questa variante carica solo la risorsa locale. Evitare chiavi senza restrizioni
+in produzione.

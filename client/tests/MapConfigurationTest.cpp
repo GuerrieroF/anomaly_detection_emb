@@ -37,6 +37,22 @@ private slots:
         QVERIFY(!config.qmlProperties().value(QStringLiteral("usesThunderforest")).toBool());
     }
 
+    void googleConfigurationPassesKeyAndMapId()
+    {
+        QTemporaryDir directory;
+        const QString path = directory.filePath(QStringLiteral("map.ini"));
+        QSettings settings(path, QSettings::IniFormat);
+        settings.setValue(QStringLiteral("map/provider"), QStringLiteral("google"));
+        settings.setValue(QStringLiteral("map/apiKey"), QStringLiteral("test key"));
+        settings.setValue(QStringLiteral("map/mapId"), QStringLiteral("map-123"));
+        settings.sync();
+        MapConfiguration config(path);
+        const auto properties = config.qmlProperties();
+        QCOMPARE(properties.value(QStringLiteral("googleApiKey")).toString(), QStringLiteral("test key"));
+        QCOMPARE(properties.value(QStringLiteral("googleMapId")).toString(), QStringLiteral("map-123"));
+        QVERIFY(!properties.value(QStringLiteral("usesThunderforest")).toBool());
+    }
+
     void fullTemplateAndPrivateDescriptors()
     {
         QTemporaryDir directory;

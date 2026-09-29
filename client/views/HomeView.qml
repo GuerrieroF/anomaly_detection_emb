@@ -11,6 +11,7 @@ Item {
     property var accelVectorHistory: []
     property real speedKmh: 0
     property var mapConfiguration: ({})
+    property var anomalies: []
 
     function appendSample() {
         var limit = Math.max(1, sampleLimit)
@@ -59,6 +60,7 @@ Item {
             latitude: root.telemetry.gpsLatitude
             longitude: root.telemetry.gpsLongitude
             heading: root.telemetry.gpsHeading
+            anomalies: root.anomalies
         }
 
         SettingsView {

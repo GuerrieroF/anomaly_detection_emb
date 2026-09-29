@@ -7,8 +7,11 @@ DashboardShell {
     required property var telemetry
     property real speedKmh: 0
     property var mapConfiguration: ({})
+    property var anomalies: []
 
     serverAvailable: telemetry.serverAvailable
+    overlaySidebar: currentIndex === 2
+    edgeToEdgeContent: currentIndex === 2
     navigationItems: [
         { icon: "speed", label: qsTr("Veicolo") },
         { icon: "charts", label: qsTr("Accelerazioni") },
@@ -22,5 +25,6 @@ DashboardShell {
         speedKmh: root.speedKmh
         currentIndex: root.currentIndex
         mapConfiguration: root.mapConfiguration
+        anomalies: root.anomalies
     }
 }

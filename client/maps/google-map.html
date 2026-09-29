@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html, body, #map { width: 100%; height: 100%; margin: 0; }
+    body { background: #202630; }
+    .vehicle { width: 32px; height: 32px; transform-origin: center; }
+    .vehicle svg { width: 32px; height: 32px; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    "use strict";
+    let map;
+    let vehicleMarker;
+    let anomalyMarkers = [];
+    let markerLibrary;
+    let latest = { valid: false, anomalies: [] };
+
+    window.updateTelemetry = function (state) {
+      latest = state;
+      if (!map || !markerLibrary) return;
+      if (vehicleMarker) {
+        vehicleMarker.map = null;
+        vehicleMarker = null;
+      }
+      if (state.valid && Number.isFinite(state.latitude) && Number.isFinite(state.longitude)) {
+        const position = { lat: state.latitude, lng: state.longitude };
+        const arrow = document.createElement("div");
+        arrow.className = "vehicle";
+        arrow.style.transform = "rotate(" + state.heading + "deg)";
+        arrow.innerHTML = '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 29 29 16 22 3 29Z" fill="#55c8e8" stroke="#f4f7fa" stroke-width="2"/></svg>';
+        vehicleMarker = new markerLibrary.AdvancedMarkerElement({
+          map, position, content: arrow, title: "Veicolo", zIndex: 1000
+        });
+        map.panTo(position);
+      }
+      for (const marker of anomalyMarkers) marker.map = null;
+      anomalyMarkers = [];
+      for (const item of state.anomalies || []) {
+        if (!Number.isFinite(item.latitude) || !Number.isFinite(item.longitude)
+            || Math.abs(item.latitude) > 90 || Math.abs(item.longitude) > 180) continue;
+        const pin = new markerLibrary.PinElement({
+          background: "#e25454", borderColor: "#fff", glyphColor: "#fff"
+        });
+        anomalyMarkers.push(new markerLibrary.AdvancedMarkerElement({
+          map,
+          position: { lat: item.latitude, lng: item.longitude },
+          content: pin.element,
+          title: item.label || "Anomalia"
+        }));
+      }
+    };
+
+    window.configureGoogleMaps = function (apiKey, mapId) {
+      if (!apiKey) return;
+      const script = document.createElement("script");
+      script.src = "https://maps.googleapis.com/maps/api/js?key="
+          + encodeURIComponent(apiKey) + "&loading=async&callback=initializeMap";
+      script.async = true;
+      script.onerror = () => console.error("Impossibile caricare Google Maps");
+      window.initializeMap = async function () {
+        const { Map } = await google.maps.importLibrary("maps");
+        const { ColorScheme } = await google.maps.importLibrary("core");
+        markerLibrary = await google.maps.importLibrary("marker");
+        map = new Map(document.getElementById("map"), {
+          center: { lat: 41.9028, lng: 12.4964 },
+          zoom: 16,
+          mapId: mapId || "DEMO_MAP_ID",
+          colorScheme: ColorScheme.DARK,
+          disableDefaultUI: true
+        });
+        window.updateTelemetry(latest);
+      };
+      document.head.append(script);
+    };
+  </script>
+</body>
+</html>

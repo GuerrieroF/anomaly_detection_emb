@@ -10,6 +10,8 @@ Rectangle {
     property alias sidebar: sideBar
     property alias topBanner: banner
     property int contentPadding: DashboardSpacing.lg
+    property bool overlaySidebar: false
+    property bool edgeToEdgeContent: false
     property bool showSidebar: true
     property bool showTopBanner: true
     property int currentIndex: 0
@@ -32,6 +34,8 @@ Rectangle {
         id: sideBar
         visible: root.showSidebar
         width: visible ? implicitWidth : 0
+        z: root.overlaySidebar ? 1 : 0
+        color: root.overlaySidebar ? "transparent" : DashboardColors.background
         anchors.left: parent.left
         anchors.top: banner.bottom
         anchors.bottom: parent.bottom
@@ -44,10 +48,10 @@ Rectangle {
 
     Item {
         id: contentHost
-        anchors.left: sideBar.right
+        anchors.left: root.overlaySidebar ? parent.left : sideBar.right
         anchors.right: parent.right
         anchors.top: banner.bottom
         anchors.bottom: parent.bottom
-        anchors.margins: root.contentPadding
+        anchors.margins: root.edgeToEdgeContent ? 0 : root.contentPadding
     }
 }

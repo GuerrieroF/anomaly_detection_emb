@@ -4,7 +4,22 @@ project(client VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick DBus Core Location Positioning)
+find_package(Qt6 REQUIRED COMPONENTS Quick QuickControls2 DBus Core Location Positioning)
+
+set(ANOMALY_MAP_BACKEND "osm" CACHE STRING "Map backend: osm or google")
+set_property(CACHE ANOMALY_MAP_BACKEND PROPERTY STRINGS osm google)
+if(NOT ANOMALY_MAP_BACKEND STREQUAL "osm" AND NOT ANOMALY_MAP_BACKEND STREQUAL "google")
+    message(FATAL_ERROR "ANOMALY_MAP_BACKEND must be osm or google")
+endif()
+if(ANOMALY_MAP_BACKEND STREQUAL "google")
+    find_package(Qt6 REQUIRED COMPONENTS WebEngineQuick)
+    configure_file(views/GoogleMapView.qml
+        ${CMAKE_CURRENT_BINARY_DIR}/selected_map/MapView.qml COPYONLY)
+    set(MAP_VIEW_QML ${CMAKE_CURRENT_BINARY_DIR}/selected_map/MapView.qml)
+    set_source_files_properties(${MAP_VIEW_QML} PROPERTIES QT_RESOURCE_ALIAS views/MapView.qml)
+else()
+    set(MAP_VIEW_QML views/MapView.qml)
+endif()
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -33,11 +48,20 @@ qt_add_qml_module(appclient
         views/HomeView.qml
         views/VehicleView.qml
         views/AccelerationsView.qml
-        views/MapView.qml
+        ${MAP_VIEW_QML}
         views/SettingsView.qml
     SOURCES
         connection/dbusclient.h connection/dbusclient.cpp
 )
+
+if(ANOMALY_MAP_BACKEND STREQUAL "google")
+    target_link_libraries(appclient PRIVATE Qt6::WebEngineQuick)
+    target_compile_definitions(appclient PRIVATE ANOMALY_GOOGLE_MAPS)
+    qt_add_resources(appclient google_maps_resources
+        PREFIX /maps
+        FILES maps/google-map.html
+    )
+endif()
 
 # Dashboard.Ui is the only UI library built by the client.
 # epr_qt_widgets_large_lib is kept in the source tree as a reference only.

@@ -5,6 +5,7 @@ import DBusExample.io
 Window {
     id: root
     property var mapConfiguration: ({})
+    property var anomalies: []
     width: 1024
     height: 600
     visible: true
@@ -14,5 +15,6 @@ Window {
         anchors.fill: parent
         telemetry: DBusClient
         mapConfiguration: root.mapConfiguration
+        anomalies: root.anomalies
     }
 }

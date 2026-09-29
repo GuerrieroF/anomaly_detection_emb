@@ -4,9 +4,16 @@
 #include <QUrl>
 #include "connection/dbusclient.h"
 #include "maps/MapConfiguration.h"
+#ifdef ANOMALY_GOOGLE_MAPS
+#include <QtWebEngineQuick/qtwebenginequickglobal.h>
+#endif
 
 int main(int argc, char *argv[])
 {
+#ifdef ANOMALY_GOOGLE_MAPS
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+    QtWebEngineQuick::initialize();
+#endif
     QGuiApplication app(argc, argv);
 
     qmlRegisterSingletonType<DBusClient>("DBusExample.io", 1 , 0, "DBusClient",[&app](QQmlEngine *engine,QJSEngine *scripEngine) ->QObject* {
