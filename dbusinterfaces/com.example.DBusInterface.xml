@@ -13,5 +13,8 @@
     <method name="getGpsMessage">
       <arg type="s" direction="out"/>
     </method>
+    <method name="getGpsPosition">
+      <arg type="a{sv}" direction="out"/>
+    </method>
   </interface>
 </node>

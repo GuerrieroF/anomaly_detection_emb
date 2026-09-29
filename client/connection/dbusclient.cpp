@@ -149,6 +149,26 @@ QString DBusClient::imuDetails() const
     return m_imuDetails;
 }
 
+bool DBusClient::gpsHasFix() const
+{
+    return m_gpsHasFix;
+}
+
+double DBusClient::gpsLatitude() const
+{
+    return m_gpsLatitude;
+}
+
+double DBusClient::gpsLongitude() const
+{
+    return m_gpsLongitude;
+}
+
+double DBusClient::gpsHeading() const
+{
+    return m_gpsHeading;
+}
+
 void DBusClient::tryConnect()
 {
     if (iface) {
@@ -166,6 +186,10 @@ void DBusClient::tryConnect()
     if (m_serverAvailable != nowAvailable) {
         m_serverAvailable = nowAvailable;
         emit serverAvailabilityChanged();
+        if (!nowAvailable && m_gpsHasFix) {
+            m_gpsHasFix = false;
+            emit gpsPositionChanged();
+        }
     }
 
     if (m_serverAvailable && retryTimer.isActive()) {
@@ -207,6 +231,30 @@ void DBusClient::pollTraffic()
     if (imuReply.isValid() && m_imuDetails != imuReply.value()) {
         m_imuDetails = imuReply.value();
         emit imuDetailsChanged();
+    }
+
+    const QDBusReply<QVariantMap> positionReply = iface->call("getGpsPosition");
+    if (positionReply.isValid()) {
+        const QVariantMap position = positionReply.value();
+        const bool valid = position.value("valid").toBool();
+        const double latitude = position.value("latitude").toDouble();
+        const double longitude = position.value("longitude").toDouble();
+        const double heading = position.value("heading").toDouble();
+        const double safeHeading = qIsFinite(heading) ? heading : 0.0;
+        const bool hasFix = valid && qIsFinite(latitude) && qIsFinite(longitude)
+                            && latitude >= -90.0 && latitude <= 90.0
+                            && longitude >= -180.0 && longitude <= 180.0;
+        if (m_gpsHasFix != hasFix ||
+            (hasFix && (m_gpsLatitude != latitude || m_gpsLongitude != longitude ||
+                        m_gpsHeading != safeHeading))) {
+            m_gpsHasFix = hasFix;
+            if (hasFix) {
+                m_gpsLatitude = latitude;
+                m_gpsLongitude = longitude;
+                m_gpsHeading = safeHeading;
+            }
+            emit gpsPositionChanged();
+        }
     }
 }
 

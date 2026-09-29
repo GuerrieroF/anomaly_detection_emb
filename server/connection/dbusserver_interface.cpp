@@ -61,3 +61,10 @@ QString DBusInterfaceAdaptor::getGpsMessage()
     QMetaObject::invokeMethod(parent(), "getGpsMessage", Q_RETURN_ARG(QString, out0));
     return out0;
 }
+
+QVariantMap DBusInterfaceAdaptor::getGpsPosition()
+{
+    QVariantMap out0;
+    QMetaObject::invokeMethod(parent(), "getGpsPosition", Q_RETURN_ARG(QVariantMap, out0));
+    return out0;
+}

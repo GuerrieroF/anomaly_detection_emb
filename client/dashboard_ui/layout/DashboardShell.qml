@@ -5,6 +5,13 @@ Rectangle {
     id: root
 
     default property alias content: contentHost.data
+    readonly property alias contentItem: contentHost
+    property alias navigationItems: sideBar.items
+    property alias sidebar: sideBar
+    property alias topBanner: banner
+    property int contentPadding: DashboardSpacing.lg
+    property bool showSidebar: true
+    property bool showTopBanner: true
     property int currentIndex: 0
     property bool serverAvailable: false
     signal navigationRequested(int index)
@@ -13,6 +20,8 @@ Rectangle {
 
     TopBanner {
         id: banner
+        visible: root.showTopBanner
+        height: visible ? implicitHeight : 0
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
@@ -21,6 +30,8 @@ Rectangle {
 
     Sidebar {
         id: sideBar
+        visible: root.showSidebar
+        width: visible ? implicitWidth : 0
         anchors.left: parent.left
         anchors.top: banner.bottom
         anchors.bottom: parent.bottom
@@ -37,6 +48,6 @@ Rectangle {
         anchors.right: parent.right
         anchors.top: banner.bottom
         anchors.bottom: parent.bottom
-        anchors.margins: DashboardSpacing.lg
+        anchors.margins: root.contentPadding
     }
 }

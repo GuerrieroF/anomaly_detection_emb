@@ -134,6 +134,31 @@ Esempio:
 ANOMALY_UART_PORT=/dev/ttyACM0 ANOMALY_UART_BAUD=921600 ./server/appserver
 ```
 
+## Libreria grafica
+
+Il client usa il modulo QML `Dashboard.Ui`, organizzato per categorie di
+componenti e personalizzabile tramite token globali e proprietà per istanza.
+La libreria `epr_qt_widgets_large_lib` rimane solo come riferimento nei sorgenti.
+Struttura, API, esempi e test sono descritti nella
+[guida di dashboard_ui](client/dashboard_ui/README.md).
+
+Il provider cartografico può essere configurato in `client/map.local.ini`
+(escluso da Git), partendo da `client/map.example.ini`. Per Thunderforest
+impostare `provider=thunderforest`, `apiKey` e `style`; il default senza chiave
+è OpenStreetMap standard. CMake copia il file accanto al client. Il percorso
+runtime può essere sovrascritto con `ANOMALY_MAP_CONFIG`.
+
+La sidebar apre quattro pagine:
+
+- **Veicolo**: tachimetro a sinistra e assetto a destra, con pitch sopra il roll.
+- **Accelerazioni**: accelerazione Z a sinistra, laterale/longitudinale a destra.
+- **Mappa**: mappa GPS a tutta pagina.
+- **Impostazioni** (icona in basso): sezioni provvisorie IMU e GPS, senza controlli attivi.
+
+Le prime due pagine dividono lo spazio in due colonne uguali. Le pagine restano
+istanziate durante la navigazione per conservare storico dei grafici e zoom
+mappa; l'acquisizione dei campioni prosegue anche nelle altre pagine.
+
 ## Build
 
 Il progetto usa CMake e Qt 6.

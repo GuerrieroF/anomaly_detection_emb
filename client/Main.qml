@@ -1,20 +1,18 @@
 import QtQuick
 import QtQuick.Window
-import Dashboard.Ui 1.0
 import DBusExample.io
 
 Window {
+    id: root
+    property var mapConfiguration: ({})
     width: 1024
     height: 600
     visible: true
     title: qsTr("Anomaly Dashboard")
 
-    DashboardShell {
+    DashboardView {
         anchors.fill: parent
-        serverAvailable: DBusClient.serverAvailable
-
-        HomeView {
-            anchors.fill: parent
-        }
+        telemetry: DBusClient
+        mapConfiguration: root.mapConfiguration
     }
 }

@@ -44,6 +44,9 @@ class DBusInterfaceAdaptor: public QDBusAbstractAdaptor
 "    <method name=\"getGpsMessage\">\n"
 "      <arg direction=\"out\" type=\"s\"/>\n"
 "    </method>\n"
+"    <method name=\"getGpsPosition\">\n"
+"      <arg direction=\"out\" type=\"a{sv}\"/>\n"
+"    </method>\n"
 "  </interface>\n"
         "")
 public:
@@ -56,6 +59,7 @@ public Q_SLOTS: // METHODS
     QString getImuDetails();
     QString getTraffic();
     QString getGpsMessage();
+    QVariantMap getGpsPosition();
 Q_SIGNALS: // SIGNALS
 };
 

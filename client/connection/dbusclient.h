@@ -8,6 +8,7 @@
 #include <QtDBus/QDBusReply>
 #include <QtDBus/QDBusError>
 #include <QtGlobal>
+#include <QVariantMap>
 
 class DBusClient : public QObject
 {
@@ -28,6 +29,10 @@ class DBusClient : public QObject
     Q_PROPERTY(QString trafficLog READ trafficLog NOTIFY trafficLogChanged)
     Q_PROPERTY(QString gpsMessage READ gpsMessage NOTIFY gpsMessageChanged)
     Q_PROPERTY(QString imuDetails READ imuDetails NOTIFY imuDetailsChanged)
+    Q_PROPERTY(bool gpsHasFix READ gpsHasFix NOTIFY gpsPositionChanged)
+    Q_PROPERTY(double gpsLatitude READ gpsLatitude NOTIFY gpsPositionChanged)
+    Q_PROPERTY(double gpsLongitude READ gpsLongitude NOTIFY gpsPositionChanged)
+    Q_PROPERTY(double gpsHeading READ gpsHeading NOTIFY gpsPositionChanged)
 public:
     explicit DBusClient(QObject *parent = nullptr);
     ~DBusClient(){}
@@ -49,6 +54,10 @@ public:
     QString trafficLog() const;
     QString gpsMessage() const;
     QString imuDetails() const;
+    bool gpsHasFix() const;
+    double gpsLatitude() const;
+    double gpsLongitude() const;
+    double gpsHeading() const;
 
 signals:
     void serverAvailabilityChanged();
@@ -58,6 +67,7 @@ signals:
     void trafficLogChanged();
     void gpsMessageChanged();
     void imuDetailsChanged();
+    void gpsPositionChanged();
 
 private:
     void tryConnect();
@@ -92,6 +102,10 @@ private:
     QString m_trafficLog;
     QString m_gpsMessage;
     QString m_imuDetails;
+    bool m_gpsHasFix = false;
+    double m_gpsLatitude = 0.0;
+    double m_gpsLongitude = 0.0;
+    double m_gpsHeading = 0.0;
 };
 
 #endif // DBUSCLIENT_H

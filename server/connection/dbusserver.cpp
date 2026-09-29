@@ -14,7 +14,7 @@ DBusServer::DBusServer(QObject *parent)
     QDBusConnection::sessionBus().registerObject("/DBUS/Service", this, QDBusConnection::ExportAllSlots);
 
     const QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    m_uartPort = env.value("ANOMALY_UART_PORT", "/dev/ttyACM1");
+    m_uartPort = env.value("ANOMALY_UART_PORT", "/dev/ttyACM0");
 
     bool baudOk = false;
     const int baud = env.value("ANOMALY_UART_BAUD", "115200").toInt(&baudOk);
@@ -66,6 +66,17 @@ QString DBusServer::getTraffic()
 QString DBusServer::getGpsMessage()
 {
     return m_lastGpsMessage;
+}
+
+QVariantMap DBusServer::getGpsPosition()
+{
+    QVariantMap position;
+    const auto reading = m_telemetry->lastGpsReading();
+    position.insert(QStringLiteral("valid"), m_telemetry->hasGpsReading() && reading.valid);
+    position.insert(QStringLiteral("latitude"), reading.latitudeDeg);
+    position.insert(QStringLiteral("longitude"), reading.longitudeDeg);
+    position.insert(QStringLiteral("heading"), reading.headingDeg);
+    return position;
 }
 
 void DBusServer::onFrameReceived(const uart::UartFrame& frame)

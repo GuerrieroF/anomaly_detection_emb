@@ -59,3 +59,6 @@ desktop.ini
 # Backup
 *.bak
 *.old
+
+# Local map-provider credentials
+map.local.ini

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QByteArray>
 #include <QStringList>
+#include <QVariantMap>
 #include "dbusserver_interface.h"
 
 namespace uart {
@@ -32,6 +33,7 @@ public slots:
     QString getImuDetails();
     QString getTraffic();
     QString getGpsMessage();
+    QVariantMap getGpsPosition();
 
 signals:
 
