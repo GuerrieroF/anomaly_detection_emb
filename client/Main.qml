@@ -8,7 +8,8 @@ Window {
     property var anomalies: []
     width: 1024
     height: 600
-    visible: true
+    visibility: Window.FullScreen
+    flags: Qt.Window | Qt.FramelessWindowHint
     title: qsTr("Anomaly Dashboard")
 
     DashboardView {
