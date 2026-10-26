@@ -76,6 +76,7 @@ QVariantMap DBusServer::getGpsPosition()
     position.insert(QStringLiteral("latitude"), reading.latitudeDeg);
     position.insert(QStringLiteral("longitude"), reading.longitudeDeg);
     position.insert(QStringLiteral("heading"), reading.headingDeg);
+    position.insert(QStringLiteral("satellites"), static_cast<int>(reading.satellites));
     return position;
 }
 

@@ -31,6 +31,7 @@ TestCase {
         property real linearAccelXg: 0.2
         property real linearAccelYg: 0.3
         property real linearAccelZg: 0.4
+        property string gpsMessage: ""
         property bool gpsHasFix: false
         property real gpsLatitude: 0
         property real gpsLongitude: 0
@@ -94,8 +95,22 @@ TestCase {
         compare(map.width, dashboard.width)
         map.zoomLevel = 12
         mockTelemetry.imuDataChanged()
+        mouseClick(findChild(dashboard, "navigationButton3"))
+        var logs = findChild(dashboard, "logsPage")
+        tryCompare(logs, "visible", true)
+        var gpsTable = findChild(logs, "gpsFieldsTable")
+        compare(gpsTable.count, 0)
+        mockTelemetry.gpsMessage = "valido: sì\nlatitudine_gradi: 45.1234567\nsatelliti: 8"
+        tryCompare(gpsTable, "count", 3)
+        compare(logs.gpsFields[1].field, "latitudine_gradi")
+        compare(logs.gpsFields[1].value, "45.1234567")
+        mockTelemetry.gpsMessage = "valido: no\nsatelliti: 0"
+        tryCompare(gpsTable, "count", 2)
+        compare(logs.gpsFields[1].value, "0")
+        mockTelemetry.gpsMessage = ""
+        compare(map.visible, false)
         mouseClick(findChild(dashboard, "settingsButton"))
-        compare(dashboard.currentIndex, 3)
+        compare(dashboard.currentIndex, 4)
         tryCompare(settings, "visible", true)
         compare(map.visible, false)
         verify(findChild(dashboard, "settingsButton").selected)
@@ -191,7 +206,7 @@ TestCase {
         verify(car)
         var map = createTemporaryObject(mapComponent, testCase, { interactive: false, markerSize: 48 })
         verify(map)
-        // No GPS fix or network connection is required to display the placeholder.
+        // The component can load without a GPS fix or network connection.
         compare(map.hasPosition, false)
     }
 }

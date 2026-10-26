@@ -149,6 +149,11 @@ QString DBusClient::imuDetails() const
     return m_imuDetails;
 }
 
+int DBusClient::gpsSatellites() const
+{
+    return m_gpsSatellites;
+}
+
 bool DBusClient::gpsHasFix() const
 {
     return m_gpsHasFix;
@@ -186,8 +191,9 @@ void DBusClient::tryConnect()
     if (m_serverAvailable != nowAvailable) {
         m_serverAvailable = nowAvailable;
         emit serverAvailabilityChanged();
-        if (!nowAvailable && m_gpsHasFix) {
+        if (!nowAvailable && (m_gpsHasFix || m_gpsSatellites != 0)) {
             m_gpsHasFix = false;
+            m_gpsSatellites = 0;
             emit gpsPositionChanged();
         }
     }
@@ -237,6 +243,7 @@ void DBusClient::pollTraffic()
     if (positionReply.isValid()) {
         const QVariantMap position = positionReply.value();
         const bool valid = position.value("valid").toBool();
+        const int satellites = qBound(0, position.value("satellites").toInt(), 255);
         const double latitude = position.value("latitude").toDouble();
         const double longitude = position.value("longitude").toDouble();
         const double heading = position.value("heading").toDouble();
@@ -244,9 +251,10 @@ void DBusClient::pollTraffic()
         const bool hasFix = valid && qIsFinite(latitude) && qIsFinite(longitude)
                             && latitude >= -90.0 && latitude <= 90.0
                             && longitude >= -180.0 && longitude <= 180.0;
-        if (m_gpsHasFix != hasFix ||
+        if (m_gpsSatellites != satellites || m_gpsHasFix != hasFix ||
             (hasFix && (m_gpsLatitude != latitude || m_gpsLongitude != longitude ||
                         m_gpsHeading != safeHeading))) {
+            m_gpsSatellites = satellites;
             m_gpsHasFix = hasFix;
             if (hasFix) {
                 m_gpsLatitude = latitude;

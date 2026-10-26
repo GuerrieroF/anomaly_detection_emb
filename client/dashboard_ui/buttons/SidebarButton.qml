@@ -5,5 +5,6 @@ DashboardButton {
     property string label: ""
 
     iconName: "home"
+    iconSize: 32
     toolTip: label
 }

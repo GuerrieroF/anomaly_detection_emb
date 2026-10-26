@@ -10,12 +10,15 @@ DashboardShell {
     property var anomalies: []
 
     serverAvailable: telemetry.serverAvailable
+    gpsSatellites: telemetry.gpsSatellites !== undefined ? telemetry.gpsSatellites : 0
+    gpsHasFix: telemetry.gpsHasFix
     overlaySidebar: currentIndex === 2
     edgeToEdgeContent: currentIndex === 2
     navigationItems: [
         { icon: "speed", label: qsTr("Veicolo") },
         { icon: "charts", label: qsTr("Accelerazioni") },
-        { icon: "map", label: qsTr("Mappa") }
+        { icon: "map", label: qsTr("Mappa") },
+        { icon: "logs", label: qsTr("Log") }
     ]
 
     HomeView {

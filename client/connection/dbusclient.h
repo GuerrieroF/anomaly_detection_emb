@@ -29,6 +29,7 @@ class DBusClient : public QObject
     Q_PROPERTY(QString trafficLog READ trafficLog NOTIFY trafficLogChanged)
     Q_PROPERTY(QString gpsMessage READ gpsMessage NOTIFY gpsMessageChanged)
     Q_PROPERTY(QString imuDetails READ imuDetails NOTIFY imuDetailsChanged)
+    Q_PROPERTY(int gpsSatellites READ gpsSatellites NOTIFY gpsPositionChanged)
     Q_PROPERTY(bool gpsHasFix READ gpsHasFix NOTIFY gpsPositionChanged)
     Q_PROPERTY(double gpsLatitude READ gpsLatitude NOTIFY gpsPositionChanged)
     Q_PROPERTY(double gpsLongitude READ gpsLongitude NOTIFY gpsPositionChanged)
@@ -54,6 +55,7 @@ public:
     QString trafficLog() const;
     QString gpsMessage() const;
     QString imuDetails() const;
+    int gpsSatellites() const;
     bool gpsHasFix() const;
     double gpsLatitude() const;
     double gpsLongitude() const;
@@ -102,6 +104,7 @@ private:
     QString m_trafficLog;
     QString m_gpsMessage;
     QString m_imuDetails;
+    int m_gpsSatellites = 0;
     bool m_gpsHasFix = false;
     double m_gpsLatitude = 0.0;
     double m_gpsLongitude = 0.0;

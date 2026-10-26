@@ -1,0 +1,8 @@
+// Only members of the dedicated device group may request shutdown.
+polkit.addRule(function(action, subject) {
+    if ((action.id === "org.freedesktop.login1.power-off" ||
+         action.id === "org.freedesktop.login1.power-off-multiple-sessions") &&
+        subject.isInGroup("anomaly-power")) {
+        return polkit.Result.YES;
+    }
+});

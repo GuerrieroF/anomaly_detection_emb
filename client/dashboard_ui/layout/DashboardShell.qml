@@ -16,7 +16,15 @@ Rectangle {
     property bool showTopBanner: true
     property int currentIndex: 0
     property bool serverAvailable: false
+    property bool wifiAvailable: false
+    property bool wifiConnected: false
+    property int wifiSignalBars: 0
+    property int batteryPercentage: -1
+    property bool batteryCharging: false
+    property int gpsSatellites: 0
+    property bool gpsHasFix: false
     signal navigationRequested(int index)
+    signal shutdownRequested()
 
     color: DashboardColors.background
 
@@ -28,6 +36,13 @@ Rectangle {
         anchors.right: parent.right
         anchors.top: parent.top
         serverAvailable: root.serverAvailable
+        wifiAvailable: root.wifiAvailable
+        wifiConnected: root.wifiConnected
+        wifiSignalBars: root.wifiSignalBars
+        batteryPercentage: root.batteryPercentage
+        batteryCharging: root.batteryCharging
+        gpsSatellites: root.gpsSatellites
+        gpsHasFix: root.gpsHasFix
     }
 
     Sidebar {
@@ -40,6 +55,7 @@ Rectangle {
         anchors.top: banner.bottom
         anchors.bottom: parent.bottom
         currentIndex: root.currentIndex
+        onShutdownRequested: root.shutdownRequested()
         onNavigationRequested: function(index) {
             root.currentIndex = index
             root.navigationRequested(index)
