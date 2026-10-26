@@ -219,3 +219,63 @@ distribuzione con restrizioni sul referrer, occorre ospitare la pagina su
 un'origine HTTPS autorizzata e configurare il client per caricarla.
 Questa variante carica solo la risorsa locale. Evitare chiavi senza restrizioni
 in produzione.
+
+## Spegnimento del dispositivo
+
+Il pulsante sotto le impostazioni apre una conferma e richiede lo spegnimento
+tramite `org.freedesktop.login1.Manager.PowerOff` sul bus di sistema.
+Su un dispositivo embedded senza agente di autenticazione, il client può ricevere
+«permesso negato» se l'utente non è autorizzato da Polkit.
+
+Sul dispositivo, dalla radice del repository, installare la policy specificando
+l'utente Linux che esegue `appclient`:
+
+```sh
+sudo sh scripts/install-power-policy.sh NOME_UTENTE_CLIENT
+```
+
+Lo script crea il gruppo `anomaly-power`, aggiunge l'utente indicato e installa
+`scripts/polkit/49-anomaly-power.rules`. Il permesso riguarda lo spegnimento,
+anche in presenza di altre sessioni; non autorizza il superamento dei blocchi
+(inhibitor) di spegnimento. Tutti i processi dell'utente nel gruppo ricevono questo
+permesso. Riavviare la sessione dell'utente (o il dispositivo) per aggiornare i
+gruppi del processo client. L'applicazione continua a essere eseguita senza root.
+
+Verifica senza spegnere il dispositivo, dalla stessa sessione del client:
+
+```sh
+id -nG
+busctl call org.freedesktop.login1 /org/freedesktop/login1 \
+    org.freedesktop.login1.Manager CanPowerOff
+```
+
+Il gruppo deve includere `anomaly-power`; il risultato atteso di `CanPowerOff` è
+`yes`. Se permane un rifiuto, controllare eventuali policy locali più restrittive
+e i log di `polkit`/`systemd-logind` sul dispositivo.
+
+### Copia degli script sul target
+
+Dal PC, nella cartella principale del progetto, copiare l'intera cartella
+`scripts` nella home dell'utente SSH del target:
+
+```sh
+scp -r scripts UTENTE_SSH@INDIRIZZO_TARGET:~/scripts
+```
+
+Sul target, installare la policy indicando l'utente che esegue `appclient`:
+
+```sh
+sudo sh ~/scripts/install-power-policy.sh NOME_UTENTE_CLIENT
+```
+
+Per individuare l'utente con il client aperto: `ps -C appclient -o user=`.
+La policy viene installata in `/etc/polkit-1/rules.d/49-anomaly-power.rules`;
+la cartella `~/scripts` conserva i file di installazione.
+
+Su target Debian privi del servizio Polkit, installarlo prima della policy:
+
+```sh
+sudo apt-get update
+sudo apt-get install polkitd
+sudo systemctl start polkit
+```

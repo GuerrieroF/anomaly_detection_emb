@@ -24,6 +24,7 @@ qt6_add_qml_module(dashboard_ui
         buttons/SidebarButton.qml
         cards/DashboardCard.qml
         icons/IconGlyph.qml
+        indicators/ApplicationLogo.qml
         indicators/MetricChip.qml
         indicators/StatusPill.qml
         bars/TopBanner.qml

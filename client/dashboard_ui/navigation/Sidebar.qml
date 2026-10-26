@@ -15,15 +15,16 @@ Rectangle {
     ]
     property int padding: DashboardSpacing.lg
     property int itemSpacing: DashboardSpacing.sm
-    property int buttonSize: DashboardSpacing.minTouch
+    property int buttonSize: 64
     property bool showSettings: true
     property string settingsIcon: "settings"
     property string settingsLabel: qsTr("Impostazioni")
     property color selectedColor: DashboardColors.accent
     property color buttonColor: DashboardColors.surfaceMuted
     signal navigationRequested(int index)
+    signal shutdownRequested()
 
-    implicitWidth: DashboardSpacing.sidebarWidth
+    implicitWidth: Math.max(DashboardSpacing.sidebarWidth, buttonSize + padding * 2)
     color: DashboardColors.background
 
     Column {
@@ -51,19 +52,33 @@ Rectangle {
         }
     }
 
-    SidebarButton {
-        objectName: "settingsButton"
-        visible: root.showSettings
-        width: root.buttonSize
-        height: root.buttonSize
-        backgroundColor: root.buttonColor
-        selectedColor: root.selectedColor
+    Column {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: root.padding
-        iconName: root.settingsIcon
-        label: root.settingsLabel
-        selected: root.currentIndex === root.items.length
-        onClicked: root.navigationRequested(root.items.length)
+        spacing: root.itemSpacing
+
+        SidebarButton {
+            objectName: "settingsButton"
+            visible: root.showSettings
+            width: root.buttonSize
+            height: root.buttonSize
+            backgroundColor: root.buttonColor
+            selectedColor: root.selectedColor
+            iconName: root.settingsIcon
+            label: root.settingsLabel
+            selected: root.currentIndex === root.items.length
+            onClicked: root.navigationRequested(root.items.length)
+        }
+
+        SidebarButton {
+            objectName: "shutdownButton"
+            width: root.buttonSize
+            height: root.buttonSize
+            backgroundColor: root.buttonColor
+            iconName: "power"
+            label: qsTr("Spegni dispositivo")
+            onClicked: root.shutdownRequested()
+        }
     }
 }

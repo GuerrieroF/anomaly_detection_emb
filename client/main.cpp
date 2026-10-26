@@ -4,6 +4,9 @@
 #include <QUrl>
 #include "connection/dbusclient.h"
 #include "maps/MapConfiguration.h"
+#include "system/DevicePower.h"
+#include "system/DeviceBattery.h"
+#include "system/DeviceWifi.h"
 #ifdef ANOMALY_GOOGLE_MAPS
 #include <QtWebEngineQuick/qtwebenginequickglobal.h>
 #endif
@@ -25,7 +28,13 @@ int main(int argc, char *argv[])
     const QString mapConfigFile = qEnvironmentVariable("ANOMALY_MAP_CONFIG",
         QCoreApplication::applicationDirPath() + QStringLiteral("/map.local.ini"));
     MapConfiguration mapConfiguration(mapConfigFile);
+    DeviceWifi deviceWifi;
+    DeviceBattery deviceBattery;
+    DevicePower devicePower;
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty(QStringLiteral("deviceWifi"), &deviceWifi);
+    engine.rootContext()->setContextProperty(QStringLiteral("deviceBattery"), &deviceBattery);
+    engine.rootContext()->setContextProperty(QStringLiteral("devicePower"), &devicePower);
     engine.setInitialProperties({{QStringLiteral("mapConfiguration"), mapConfiguration.qmlProperties()}});
     engine.load(QUrl(QStringLiteral("qrc:/qt/qml/client/Main.qml")));
     if (engine.rootObjects().isEmpty()) {

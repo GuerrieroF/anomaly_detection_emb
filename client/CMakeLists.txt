@@ -29,6 +29,9 @@ qt6_generate_dbus_interface(client_dbus_iface
 
 qt_add_executable(appclient
     main.cpp
+    system/DevicePower.h
+    system/DeviceBattery.h
+    system/DeviceWifi.h
     maps/MapConfiguration.h maps/MapConfiguration.cpp
     ${client_dbus_iface}
 )
@@ -44,6 +47,7 @@ qt_add_qml_module(appclient
     RESOURCE_PREFIX /qt/qml
     QML_FILES
         Main.qml
+        dialogs/PowerDialog.qml
         views/DashboardView.qml
         views/HomeView.qml
         views/VehicleView.qml
