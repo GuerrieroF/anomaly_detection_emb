@@ -54,6 +54,7 @@ qt_add_qml_module(appclient
         views/AccelerationsView.qml
         ${MAP_VIEW_QML}
         views/SettingsView.qml
+        views/LogsView.qml
     SOURCES
         connection/dbusclient.h connection/dbusclient.cpp
 )

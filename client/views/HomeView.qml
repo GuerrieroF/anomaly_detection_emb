@@ -63,6 +63,11 @@ Item {
             anomalies: root.anomalies
         }
 
+        LogsView {
+            objectName: "logsPage"
+            telemetry: root.telemetry
+        }
+
         SettingsView {
             objectName: "settingsPage"
         }

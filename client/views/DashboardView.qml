@@ -17,7 +17,8 @@ DashboardShell {
     navigationItems: [
         { icon: "speed", label: qsTr("Veicolo") },
         { icon: "charts", label: qsTr("Accelerazioni") },
-        { icon: "map", label: qsTr("Mappa") }
+        { icon: "map", label: qsTr("Mappa") },
+        { icon: "logs", label: qsTr("Log") }
     ]
 
     HomeView {
