@@ -71,12 +71,18 @@ Item {
     }
 
     Text {
-        anchors.centerIn: parent
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottomMargin: DashboardSpacing.sm
         width: parent.width - DashboardSpacing.xl
-        visible: !root.hasApiKey || !root.hasPosition
+        visible: !root.hasApiKey || webView.title !== "map-ready" || !root.hasPosition
         text: !root.hasApiKey
               ? qsTr("Impostare la chiave Google Maps in map.local.ini")
-              : qsTr("In attesa della posizione dalla scheda")
+              : webView.title === "map-error"
+                ? qsTr("Caricamento Google Maps non riuscito. Nuovo tentativo in corso…")
+                : webView.title !== "map-ready"
+                  ? qsTr("Caricamento Google Maps…")
+                  : qsTr("In attesa della posizione dalla scheda")
         color: DashboardColors.textSecondary
         font.family: DashboardTypography.family
         font.pixelSize: DashboardTypography.caption

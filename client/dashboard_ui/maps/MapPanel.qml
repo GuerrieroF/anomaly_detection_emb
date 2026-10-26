@@ -28,10 +28,23 @@ DashboardCard {
     Map {
         id: map
         anchors.fill: parent
-        visible: root.hasPosition
         plugin: root.mapPlugin
-        center: QtPositioning.coordinate(root.latitude, root.longitude)
+        center: QtPositioning.coordinate(41.9028, 12.4964)
         zoomLevel: 16
+
+        function followPosition() {
+            if (root.hasPosition)
+                center = QtPositioning.coordinate(root.latitude, root.longitude)
+        }
+
+        Component.onCompleted: followPosition()
+
+        Connections {
+            target: root
+            function onHasPositionChanged() { map.followPosition() }
+            function onLatitudeChanged() { map.followPosition() }
+            function onLongitudeChanged() { map.followPosition() }
+        }
 
         WheelHandler {
             enabled: root.interactive
@@ -88,7 +101,7 @@ DashboardCard {
         anchors.right: parent.right
         anchors.margins: DashboardSpacing.sm
         spacing: DashboardSpacing.xs
-        visible: root.hasPosition && root.showZoomControls
+        visible: root.showZoomControls
 
         DashboardButton {
             text: "+"
@@ -106,7 +119,9 @@ DashboardCard {
     }
 
     Text {
-        anchors.centerIn: parent
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottomMargin: DashboardSpacing.sm
         visible: !root.hasPosition
         text: root.waitingText
         color: DashboardColors.textSecondary
@@ -115,5 +130,12 @@ DashboardCard {
         horizontalAlignment: Text.AlignHCenter
         wrapMode: Text.WordWrap
         width: parent.width - DashboardSpacing.xl
+        padding: DashboardSpacing.sm
+        Rectangle {
+            anchors.fill: parent
+            z: -1
+            color: DashboardColors.surface
+            radius: DashboardSpacing.sm
+        }
     }
 }
