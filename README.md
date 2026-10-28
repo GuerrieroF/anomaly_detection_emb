@@ -299,3 +299,10 @@ sessione occorre inserire nuovamente la password. I profili falliti sono elimina
 
 Per eseguire la verifica automatica del backend con `nmcli` simulato, configurare
 con `-DDASHBOARD_UI_BUILD_TESTS=ON`, compilare e avviare `client/wifi_manager_tests`.
+
+Il campo password Wi-Fi apre una tastiera integrata con lo stile della dashboard:
+lettere, maiuscole, numeri, simboli e spazio. La password resta mascherata;
+Conferma riporta il valore nella configurazione della rete, Annulla scarta le
+modifiche. È supportata anche la digitazione da tastiera fisica nel dialogo.
+La tastiera non richiede moduli Qt Virtual Keyboard o applicazioni esterne e
+non modifica la tastiera di sistema usata dalle altre applicazioni.

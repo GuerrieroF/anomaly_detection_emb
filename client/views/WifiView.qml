@@ -177,6 +177,17 @@ ColumnLayout {
             Label { id: passwordLabel; color: DashboardColors.textSecondary; font.pixelSize: 20; font.family: DashboardTypography.family; text: qsTr("Password"); visible: encryption.currentIndex !== 0 }
             TextField {
                 id: password
+                readOnly: true
+                TapHandler {
+                    onTapped: {
+                        passwordEditor.value = password.text
+                        passwordEditor.open()
+                    }
+                }
+                Keys.onReturnPressed: {
+                    passwordEditor.value = password.text
+                    passwordEditor.open()
+                }
                 Layout.fillWidth: true
                 visible: encryption.currentIndex !== 0
                 implicitHeight: 56
@@ -231,6 +242,10 @@ ColumnLayout {
                 onClicked: warning.accept()
             }
         }
+    }
+    PasswordDialog {
+        id: passwordEditor
+        onPasswordConfirmed: function(value) { password.text = value }
     }
     Connections {
         target: root.wifi

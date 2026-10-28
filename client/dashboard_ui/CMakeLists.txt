@@ -20,6 +20,7 @@ qt6_add_qml_module(dashboard_ui
         colors/DashboardColors.qml
         spacing/DashboardSpacing.qml
         typography/DashboardTypography.qml
+        keyboard/PasswordKeyboard.qml
         buttons/DashboardButton.qml
         buttons/SidebarButton.qml
         cards/DashboardCard.qml

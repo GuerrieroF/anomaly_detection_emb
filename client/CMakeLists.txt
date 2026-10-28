@@ -50,6 +50,7 @@ qt_add_qml_module(appclient
         Main.qml
         dialogs/PowerDialog.qml
         dialogs/DashboardDialog.qml
+        dialogs/PasswordDialog.qml
         views/DashboardView.qml
         views/HomeView.qml
         views/VehicleView.qml
