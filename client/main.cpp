@@ -7,6 +7,7 @@
 #include "system/DevicePower.h"
 #include "system/DeviceBattery.h"
 #include "system/DeviceWifi.h"
+#include "system/WifiManager.h"
 #ifdef ANOMALY_GOOGLE_MAPS
 #include <QtWebEngineQuick/qtwebenginequickglobal.h>
 #endif
@@ -29,9 +30,11 @@ int main(int argc, char *argv[])
         QCoreApplication::applicationDirPath() + QStringLiteral("/map.local.ini"));
     MapConfiguration mapConfiguration(mapConfigFile);
     DeviceWifi deviceWifi;
+    WifiManager wifiManager;
     DeviceBattery deviceBattery;
     DevicePower devicePower;
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty(QStringLiteral("wifiManager"), &wifiManager);
     engine.rootContext()->setContextProperty(QStringLiteral("deviceWifi"), &deviceWifi);
     engine.rootContext()->setContextProperty(QStringLiteral("deviceBattery"), &deviceBattery);
     engine.rootContext()->setContextProperty(QStringLiteral("devicePower"), &devicePower);

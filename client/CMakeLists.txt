@@ -32,6 +32,7 @@ qt_add_executable(appclient
     system/DevicePower.h
     system/DeviceBattery.h
     system/DeviceWifi.h
+    system/WifiManager.h system/WifiManager.cpp
     maps/MapConfiguration.h maps/MapConfiguration.cpp
     ${client_dbus_iface}
 )
@@ -74,6 +75,13 @@ add_subdirectory(dashboard_ui)
 
 if(DASHBOARD_UI_BUILD_TESTS)
     find_package(Qt6 REQUIRED COMPONENTS Test)
+    qt_add_executable(wifi_manager_tests
+        tests/WifiManagerTest.cpp
+        system/WifiManager.h system/WifiManager.cpp
+    )
+    target_include_directories(wifi_manager_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+    target_link_libraries(wifi_manager_tests PRIVATE Qt6::Core Qt6::Test)
+
     qt_add_executable(map_configuration_tests
         tests/MapConfigurationTest.cpp
         maps/MapConfiguration.h maps/MapConfiguration.cpp
