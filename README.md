@@ -279,3 +279,30 @@ sudo apt-get update
 sudo apt-get install polkitd
 sudo systemctl start polkit
 ```
+
+### Configurazione Wi-Fi
+
+Il pulsante Wi-Fi sopra Impostazioni mostra le reti rilevate e indica la rete
+attiva con **Connesso**. Selezionando una rete si possono impostare crittografia
+(rete aperta, WEP, WPA/WPA2 Personal o WPA3 Personal) e password. Il client prova
+la connessione fino a tre volte, con un timeout di 30 secondi per tentativo;
+in caso di fallimento mostra un avviso modale. Le reti Enterprise/802.1X
+richiedono una configurazione esterna.
+
+Il dispositivo deve usare NetworkManager, avere `nmcli` nel PATH e concedere
+all'utente del client le autorizzazioni NetworkManager per scansione, creazione
+e attivazione dei profili. Il client non richiede sudo. Le chiamate sono
+asincrone. La password viene passata tramite `passwd-file`, in un file temporaneo
+accessibile solo all'utente, e rimossa al termine. I profili creati hanno
+l'autoconnessione disabilitata e i segreti non vengono salvati: dopo una nuova
+sessione occorre inserire nuovamente la password. I profili falliti sono eliminati.
+
+Per eseguire la verifica automatica del backend con `nmcli` simulato, configurare
+con `-DDASHBOARD_UI_BUILD_TESTS=ON`, compilare e avviare `client/wifi_manager_tests`.
+
+Il campo password Wi-Fi apre una tastiera integrata con lo stile della dashboard:
+lettere, maiuscole, numeri, simboli e spazio. La password resta mascherata;
+Conferma riporta il valore nella configurazione della rete, Annulla scarta le
+modifiche. È supportata anche la digitazione da tastiera fisica nel dialogo.
+La tastiera non richiede moduli Qt Virtual Keyboard o applicazioni esterne e
+non modifica la tastiera di sistema usata dalle altre applicazioni.

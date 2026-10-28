@@ -71,5 +71,10 @@ Item {
         SettingsView {
             objectName: "settingsPage"
         }
+
+        WifiView {
+            objectName: "wifiPage"
+            wifi: wifiManager
+        }
     }
 }
