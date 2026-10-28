@@ -15,7 +15,7 @@ Rectangle {
     ]
     property int padding: DashboardSpacing.lg
     property int itemSpacing: DashboardSpacing.sm
-    property int buttonSize: 64
+    property int buttonSize: 56
     property bool showSettings: true
     property string settingsIcon: "settings"
     property string settingsLabel: qsTr("Impostazioni")
@@ -57,6 +57,18 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: root.padding
         spacing: root.itemSpacing
+
+        SidebarButton {
+            objectName: "wifiButton"
+            width: root.buttonSize
+            height: root.buttonSize
+            backgroundColor: root.buttonColor
+            selectedColor: root.selectedColor
+            iconName: "wifi"
+            label: qsTr("Wi-Fi")
+            selected: root.currentIndex === root.items.length + 1
+            onClicked: root.navigationRequested(root.items.length + 1)
+        }
 
         SidebarButton {
             objectName: "settingsButton"

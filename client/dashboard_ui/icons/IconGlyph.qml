@@ -36,6 +36,27 @@ Canvas {
         var cx = w / 2
         var cy = h / 2
 
+        if (name === "refresh") {
+            ctx.beginPath()
+            ctx.arc(cx, cy, w * 0.31, -Math.PI * 0.7, Math.PI * 0.95)
+            ctx.stroke()
+            ctx.beginPath()
+            ctx.moveTo(w * 0.34, h * 0.12)
+            ctx.lineTo(w * 0.56, h * 0.13)
+            ctx.lineTo(w * 0.52, h * 0.35)
+            ctx.stroke()
+            return
+        }
+
+        if (name === "chevron-left") {
+            ctx.beginPath()
+            ctx.moveTo(w * 0.62, h * 0.25)
+            ctx.lineTo(w * 0.37, h * 0.5)
+            ctx.lineTo(w * 0.62, h * 0.75)
+            ctx.stroke()
+            return
+        }
+
         if (name === "wifi" || name === "wifi-off") {
             for (var arc = 1; arc <= 3; ++arc) {
                 ctx.globalAlpha = name === "wifi" && arc > signalBars ? 0.25 : 1

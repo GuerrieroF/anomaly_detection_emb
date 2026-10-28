@@ -49,12 +49,14 @@ qt_add_qml_module(appclient
     QML_FILES
         Main.qml
         dialogs/PowerDialog.qml
+        dialogs/DashboardDialog.qml
         views/DashboardView.qml
         views/HomeView.qml
         views/VehicleView.qml
         views/AccelerationsView.qml
         ${MAP_VIEW_QML}
         views/SettingsView.qml
+        views/WifiView.qml
         views/LogsView.qml
     SOURCES
         connection/dbusclient.h connection/dbusclient.cpp
